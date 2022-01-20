@@ -64,4 +64,9 @@ body {
 
 .trashIcon {
   color: #d90429;
+  font-size: 20px;
+}
+
+.trashIcon:active {
+  font-weight: 700;
 }

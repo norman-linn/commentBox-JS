@@ -1,5 +1,4 @@
 const containerTag = document.querySelector(".container");
-
 const commentBoxTag = `
 <div class="commentBoxContainer">
   <textarea class="form-control commentBox" id="inputComment" placeholder="Enter your comment..."></textarea>
@@ -13,28 +12,27 @@ containerTag.innerHTML += `${commentBoxTag} ${buttonTag} ${showCommentTag}`;
 
 const userInputTag = document.querySelector("#inputComment");
 const postBtnTag = document.querySelector(".button");
+const commentContainerTag = document.querySelector("#comments");
 
-let counter = 1;
-const createCommentContainer = () => {
-  const commentContainerTag = document.querySelector("#comments");
+window.addEventListener("load", () => {
+  for (let i = 0; i < localStorage.length; i++) {
+    console.log(localStorage.getItem(i));
+    if (localStorage.getItem(i) !== null) {
+      showSavedComment(i);
+    } else {
+    }
+  }
+});
 
-  // div.listCommentContainer > liTag + trashIcon
+const showSavedComment = (index) => {
   const listCommentContainerTag = document.createElement("div");
   listCommentContainerTag.classList.add("commentContainer");
 
-  // create liTag later 'll append it to listCommentContainer
   const LiCommentTag = document.createElement("li");
   LiCommentTag.classList.add("commentList");
-  LiCommentTag.id = counter; // save with id
 
-  const key = `comment ${counter}`; // counter will be 1 because increment on the above.
-  const value = userInputTag.value;
-  localStorage.setItem(key, value);
-
-  LiCommentTag.append(localStorage.getItem(key));
-  // console.log(localStorage.getItem(key));
-
-  // create trashIcon
+  LiCommentTag.append(localStorage.getItem(index));
+  listCommentContainerTag.id = index;
   const trashIconTag = document.createElement("i");
   trashIconTag.classList.add("far", "fa-trash-alt", "trashIcon");
 
@@ -42,51 +40,46 @@ const createCommentContainer = () => {
   commentContainerTag.append(listCommentContainerTag);
 
   trashIconTag.addEventListener("click", () => {
+    localStorage.removeItem(index);
     listCommentContainerTag.remove();
+    return;
   });
+};
 
+let counter = 0;
+const createCommentContainer = () => {
+  const listCommentContainerTag = document.createElement("div");
+  listCommentContainerTag.classList.add("commentContainer");
+
+  const LiCommentTag = document.createElement("li");
+  LiCommentTag.classList.add("commentList");
+  const newCounter = counter + 1;
+
+  const key = newCounter;
+  const value = userInputTag.value;
+  localStorage.setItem(key, value);
+
+  LiCommentTag.append(localStorage.getItem(key));
+  listCommentContainerTag.id = newCounter;
   counter++;
+  const trashIconTag = document.createElement("i");
+  trashIconTag.classList.add("far", "fa-trash-alt", "trashIcon");
+
+  listCommentContainerTag.append(LiCommentTag, trashIconTag);
+  commentContainerTag.append(listCommentContainerTag);
+
+  trashIconTag.addEventListener("click", () => {
+    localStorage.removeItem(key);
+    listCommentContainerTag.remove();
+    return;
+  });
 };
 
 postBtnTag.addEventListener("click", () => {
-  // empty => do nth/return
   if (userInputTag.value === "") {
     userInputTag.placeholder = "Please TYPE Smth Before YOU POST!";
     return;
   }
   createCommentContainer();
   userInputTag.value = "";
-});
-
-window.addEventListener("load", () => {
-  counter = 1;
-
-  while (counter <= localStorage.length) {
-    const commentContainerTag = document.querySelector("#comments");
-
-    // div.listCommentContainer > liTag + trashIcon
-    const listCommentContainerTag = document.createElement("div");
-    listCommentContainerTag.classList.add("commentContainer");
-
-    // create liTag later 'll append it to listCommentContainer
-    const LiCommentTag = document.createElement("li");
-    LiCommentTag.classList.add("commentList");
-    LiCommentTag.id = counter; // save with id
-
-    LiCommentTag.append(localStorage.getItem(`comment ${counter}`));
-    console.log(
-      localStorage.getItem(localStorage.getItem(`comment ${counter}`))
-    );
-    const trashIconTag = document.createElement("i");
-    trashIconTag.classList.add("far", "fa-trash-alt", "trashIcon");
-
-    listCommentContainerTag.append(LiCommentTag, trashIconTag);
-    commentContainerTag.append(listCommentContainerTag);
-
-    trashIconTag.addEventListener("click", () => {
-      listCommentContainerTag.remove();
-    });
-
-    counter++;
-  }
 });
