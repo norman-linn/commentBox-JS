@@ -25,23 +25,36 @@ body {
   height: 100px;
 }
 
-.button {
+.btnContainer {
   margin: 0 auto;
-  padding: 10px;
+}
+
+.postBtn {
   background-color: #8d99ae;
+  margin-right: 15px;
 }
 
-.button:hover {
-  background-color: #fca311;
+.postBtn:hover,
+.clearBtn:hover {
   font-weight: 500;
+  color: #000;
 }
 
-.button:active {
+.postBtn:active {
+  background-color: #fca311;
   color: #14213d;
 }
 
+.clearBtn {
+  color: #000;
+}
+
+.clearBtn:focus {
+  color: #000;
+}
+
 .showCommentContainer {
-  margin: 25px auto;
+  margin: 40px auto;
 }
 
 .commentContainer {
