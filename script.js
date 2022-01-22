@@ -28,9 +28,6 @@ const createCommentContainer = (valueComment) => {
   LiCommentTag.classList.add("commentList");
   const newCounter = counter + 1;
 
-  // const value = userInputTag.value;
-  // localStorage.setItem(key, value);
-  // LiCommentTag.append(localStorage.getItem(key));
   listCommentContainerTag.id = newCounter;
   LiCommentTag.append(valueComment);
 
@@ -48,9 +45,7 @@ const createCommentContainer = (valueComment) => {
   trashIconTag.addEventListener("click", () => {
     localStorage.removeItem(key);
     listCommentContainerTag.remove();
-
-    counter = 1;
-    return counter;
+    console.log("counterValue", counter);
   });
 };
 
@@ -69,25 +64,17 @@ postBtnTag.addEventListener("click", () => {
 
 clearBtnTag.addEventListener("click", () => {
   if (localStorage.length === 0) return;
-
   counter = 0;
   localStorage.clear();
   commentContainerTag.innerHTML = "";
 });
 
 window.addEventListener("load", () => {
-  const commentFromLocalStorage = [];
-  if (counter < localStorage.length > 0) {
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      console.log(key);
-      commentFromLocalStorage[i] = localStorage.getItem(key);
-      console.log(localStorage.getItem(key));
-    }
-    const newSortArray = commentFromLocalStorage.sort();
-    console.log(newSortArray);
-    for (let j = 0; j < newSortArray.length; j++) {
-      createCommentContainer(newSortArray[j]);
+  let commentFromLocalStorage = [];
+  for (let i = 1; i <= localStorage.length; i++) {
+    commentFromLocalStorage[i] = localStorage.getItem(`comment ${i}`);
+    if (commentFromLocalStorage[i] !== null) {
+      createCommentContainer(commentFromLocalStorage[i]);
     }
   }
 });
